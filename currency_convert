@@ -1,0 +1,14 @@
+def parseCSV(content):
+    lines = content.split('\n')
+    parsed = [ line.split(',') for line in lines ]
+    return parsed
+
+def main():
+    file = open("data.csv", "r")
+    content = file.read()
+    parsed = parseCSV(content)
+    print(parsed)
+
+
+if __name__ == '__main__':
+    main()

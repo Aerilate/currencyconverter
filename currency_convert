@@ -1,13 +1,44 @@
+import argparse
+
+EURO_SIGN = '€'
+
 def parseCSV(content):
     lines = content.split('\n')
     parsed = [ line.split(',') for line in lines ]
     return parsed
 
+def CSVtoString(content):
+    formatted = [ ','.join(line) for line in content ]
+    formatted = '\n'.join(formatted)
+    return formatted
+
 def main():
-    file = open("data.csv", "r")
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--field', metavar='N', type=int,
+                        help='Convert CSV field N')
+    parser.add_argument('--multiplier', metavar='N', type=float,
+                        help='Muliply currency value by N for the current conversion rate')
+    parser.add_argument('-i', metavar='input', type=str,
+                        help='Read from input file (or stdin)')
+    parser.add_argument('-o', metavar='output', type=str,
+                        help='Write to output file (or stdout)')
+
+    args = parser.parse_args()
+    inputFile = args.i
+    outputFile = args.o
+
+    file = open(inputFile, "r")
     content = file.read()
     parsed = parseCSV(content)
-    print(parsed)
+
+    newContent = CSVtoString(parsed)
+    if outputFile:
+        f = open(outputFile, "w")
+        f.write(newContent)
+        f.close()
+    else:
+        print(newContent)
+
 
 
 if __name__ == '__main__':

@@ -30,7 +30,7 @@ def main():
     parser = argparse.ArgumentParser(description='Converts prices in a CSV to another currency.')
     parser.add_argument('--field', metavar='N', type=int, required=True,
                         help='Convert CSV field N')
-    parser.add_argument('--multiplier', metavar='N', type=float,
+    parser.add_argument('--multiplier', metavar='N', type=float, required=True,
                         help='Multiply currency value by N for the current conversion rate')
     parser.add_argument('-i', metavar='input', type=str,
                         help='Read from input file (or stdin)')
@@ -49,9 +49,6 @@ def main():
         return 1
     elif fieldNum < 1:
         print(f'ERROR: The field number {fieldNum} must be at least 1.')
-        return 1
-    elif not multiplier:
-        print(f'ERROR: A multiplier must be specified.')
         return 1
 
     if inputFile:

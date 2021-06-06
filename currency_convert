@@ -28,7 +28,7 @@ def convertCurrency(content, fieldNum, multiplier):
 
 def main():
     parser = argparse.ArgumentParser(description='Converts prices in a CSV to another currency.')
-    parser.add_argument('--field', metavar='N', type=int,
+    parser.add_argument('--field', metavar='N', type=int, required=True,
                         help='Convert CSV field N')
     parser.add_argument('--multiplier', metavar='N', type=float,
                         help='Multiply currency value by N for the current conversion rate')
@@ -45,16 +45,13 @@ def main():
 
     # Basic checks
     if inputFile and not os.path.isfile(inputFile):
-        print(f'The input file {inputFile} does not exist.')
-        return 1
-    elif not fieldNum:
-        print(f'A field number must be specified.')
+        print(f'ERROR: The input file {inputFile} does not exist.')
         return 1
     elif fieldNum < 1:
-        print(f'The field number {fieldNum} must be at least 1.')
+        print(f'ERROR: The field number {fieldNum} must be at least 1.')
         return 1
     elif not multiplier:
-        print(f'A multiplier must be specified.')
+        print(f'ERROR: A multiplier must be specified.')
         return 1
 
     if inputFile:
@@ -66,7 +63,7 @@ def main():
             content += line
     parsed = parseCSV(content)
 
-    convertCurrency(parsed, fieldNum - 1, multiplier)
+    convertCurrency(parsed, fieldNum - 1, multiplier) # subtract 1 because arrays are 0-based
     
     newContent = CSVtoString(parsed)
     if outputFile:

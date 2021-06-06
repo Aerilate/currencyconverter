@@ -3,7 +3,7 @@ Currency converter reads in a CSV file as input and converts prices of a specifi
   
   
 ## Input
-The input is a CSV with one column having prices to convert. The first row will be ignored in any calculations.
+The input is a CSV file with one column having prices to convert. The first row will be ignored in any calculations.
   
   
 ## Usage

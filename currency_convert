@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--field', metavar='N', type=int,
                         help='Convert CSV field N')
     parser.add_argument('--multiplier', metavar='N', type=float,
-                        help='Muliply currency value by N for the current conversion rate')
+                        help='Multiply currency value by N for the current conversion rate')
     parser.add_argument('-i', metavar='input', type=str,
                         help='Read from input file (or stdin)')
     parser.add_argument('-o', metavar='output', type=str,
@@ -39,11 +39,15 @@ def main():
     multiplier = args.multiplier
 
     # Basic checks
-    if not os.path.isfile(inputFile):
+    if inputFile and not os.path.isfile(inputFile):
         print(f'The input file {inputFile} does not exist.')
+        return 1
+    elif not fieldNum:
+        print(f'A field number must be specified.')
         return 1
     elif fieldNum < 1:
         print(f'The field number {fieldNum} must be at least 1.')
+        return 1
 
     if inputFile:
         file = open(inputFile, "r")

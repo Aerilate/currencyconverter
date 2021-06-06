@@ -1,8 +1,9 @@
 import argparse
 import sys
+import os.path
 
 EURO_SIGN = '€'
-USD_SIGN = 'USD'
+USD_SIGN = 'USD' # unused for now
 
 def parseCSV(content):
     lines = content.split('\n')
@@ -38,6 +39,13 @@ def main():
     fieldNum = args.field
     multiplier = args.multiplier
 
+    # Basic checks
+    if not os.path.isfile(inputFile):
+        print(f'The input file {inputFile} does not exist.')
+        return 1
+    elif fieldNum < 1:
+        print(f'The field number {fieldNum} must be at least 1.')
+
     if inputFile:
         file = open(inputFile, "r")
         content = file.read()
@@ -47,7 +55,7 @@ def main():
             content += line
     parsed = parseCSV(content)
 
-    convertCurrency(parsed, fieldNum, multiplier)
+    convertCurrency(parsed, fieldNum - 1, multiplier)
     
     newContent = CSVtoString(parsed)
     if outputFile:

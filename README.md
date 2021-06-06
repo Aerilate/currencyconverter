@@ -1,4 +1,4 @@
-# Currency-Converter
+# :dollar: Currency-Converter :dollar:
 Currency converter reads in a CSV file as input and converts prices of a specific column to another currency.
   
   

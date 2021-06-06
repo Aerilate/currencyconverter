@@ -1,19 +1,28 @@
 import argparse
+import sys
 
 EURO_SIGN = '€'
+USD_SIGN = 'USD'
 
 def parseCSV(content):
     lines = content.split('\n')
-    parsed = [ line.split(',') for line in lines ]
+    parsed = [ line.split(',') for line in lines if line]
     return parsed
 
 def CSVtoString(content):
+    print(content)
     formatted = [ ','.join(line) for line in content ]
     formatted = '\n'.join(formatted)
     return formatted
 
+def convertCurrency(content, fieldNum, multiplier):
+    for i in range(1, len(content)): # ignore header row
+        price = float(content[i][fieldNum])
+        price = price * multiplier
+        content[i][fieldNum] = EURO_SIGN + ' %.2f' % price
+
 def main():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Converts prices in a CSV to another currency.')
     parser.add_argument('--field', metavar='N', type=int,
                         help='Convert CSV field N')
     parser.add_argument('--multiplier', metavar='N', type=float,
@@ -26,11 +35,20 @@ def main():
     args = parser.parse_args()
     inputFile = args.i
     outputFile = args.o
+    fieldNum = args.field
+    multiplier = args.multiplier
 
-    file = open(inputFile, "r")
-    content = file.read()
+    if inputFile:
+        file = open(inputFile, "r")
+        content = file.read()
+    else:
+        content = ''
+        for line in sys.stdin:
+            content += line
     parsed = parseCSV(content)
 
+    convertCurrency(parsed, fieldNum, multiplier)
+    
     newContent = CSVtoString(parsed)
     if outputFile:
         f = open(outputFile, "w")
@@ -38,7 +56,6 @@ def main():
         f.close()
     else:
         print(newContent)
-
 
 
 if __name__ == '__main__':
